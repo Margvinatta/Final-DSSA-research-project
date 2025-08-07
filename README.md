@@ -10,23 +10,6 @@ This project analyzes 8,789 food items to identify healthier alternatives based 
 **Dataset Source:**  
 [Kaggle - Nutrition Dataset](https://www.kaggle.com/datasets/gokulprasantht/nutrition-dataset)
 
-## Key Features
-- Nutrient cleaning and standardization
-- Health score formula for ranking
-- K-means clustering (k = 3)
-- PCA biplot and radar chart visualizations
-- Cosine similarity–based recommendation engine
-
-## How to Run
-1. Open `nutrition_analysis.R` in RStudio.
-2. Make sure required libraries (e.g., `dplyr`, `ggplot2`, `factoextra`) are installed.
-3. Run each section or the full script.
-4. Outputs will be visible in plots and printed tables.
-
-## Tools Used
-- R (version 4.4.1)
-- `dplyr`, `ggplot2`, `cluster`, `factoextra`, `fmsb`, `corrplot`, `wordcloud2`, `proxy`
-
 ## Column Descriptions
 The dataset includes nutrient information per food item, with the following key columns (cleaned and standardized for analysis):
 
@@ -44,6 +27,22 @@ The dataset includes nutrient information per food item, with the following key 
 - `vitamin_c`: Vitamin C (mg)
 - `vitamin_a`: Vitamin A (IU or µg)
 
+## Key Features
+- Nutrient cleaning and standardization
+- Health score formula for ranking
+- K-means clustering (k = 3)
+- PCA biplot and radar chart visualizations
+- Cosine similarity–based recommendation engine
+
+## How to Run
+1. Open `nutrition_analysis.R` in RStudio.
+2. Make sure required libraries (e.g., `dplyr`, `ggplot2`, `factoextra`) are installed.
+3. Run each section or the full script.
+4. Outputs will be visible in plots and printed tables.
+
+## Tools Used
+- R (version 4.4.1)
+- `dplyr`, `ggplot2`, `cluster`, `factoextra`, `fmsb`, `corrplot`, `wordcloud2`, `proxy`
 
 ## Author
 **Margvinatta Senesie**  
