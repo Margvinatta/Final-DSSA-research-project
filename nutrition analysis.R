@@ -13,6 +13,7 @@ library(wordcloud2)
 library(corrplot)
 library(proxy)
 library(stopwords)
+
 # Load data
 df <- read_excel("nutrition.xlsx")
 
@@ -27,6 +28,7 @@ clean_numeric <- function(x) {
   x <- gsub("[^0-9.]", "", x) # remove non-numeric characters
   as.numeric(x)
 }
+
 # want to know the names of the columns
 colnames(df)
 
@@ -65,6 +67,7 @@ ggplot(df, aes(x = clean_total_fat, y = clean_sodium)) +
   labs(title = "Fat vs Sodium", x = "Total Fat (g)", y = "Sodium (mg)")
 
 # Cluster foods based on main nutrients
+
 # Filter only complete rows for clustering
 cluster_data <- df %>%
   select(name, starts_with("clean_")) %>%
@@ -105,6 +108,7 @@ print("Average Nutrients by Cluster:")
 print(cluster_means)
 
 # PHASE 1: Cluster Interpretation
+
 # Radar Chart of Cluster Means
 radar_data <- cluster_means %>%
   select(-cluster) %>% 
@@ -119,7 +123,7 @@ radar_ready <- rbind(apply(radar_data, 2, max),
 
 radarchart(radar_ready, axistype = 1, title = "Radar Chart of Clusters")
 
-# Word Cloud for Cluster Labels (with stopwords removed)
+
 # Word Cloud for Cluster Labels (with stopwords removed)
 for (i in unique(df$cluster)) {
   cluster_names <- df %>% filter(cluster == i) %>% pull(name)
@@ -144,6 +148,7 @@ cor_matrix <- cor(df %>% select(starts_with("clean_")), use = "complete.obs")
 corrplot(cor_matrix, method = "color", type = "upper")
 
 # PCA
+
 # Filter full dataset to match rows used in PCA
 pca_data <- df %>%
   filter(!is.na(cluster)) %>%              # Remove rows without a cluster
@@ -160,6 +165,7 @@ pca <- prcomp(nutrient_only, scale. = TRUE)
 fviz_pca_biplot(pca, label = "var", habillage = pca_data$cluster, addEllipses = TRUE)
 
 # PHASE 3: Cosine Similarity Recommender
+
 # Compute cosine distance matrix and convert to square matrix
 nutrient_matrix <- df %>%
   select(starts_with("clean_")) %>%
@@ -173,45 +179,54 @@ similarity_dist <- proxy::dist(nutrient_matrix, method = "cosine")
 # Convert to full matrix
 similarity_matrix <- as.matrix(similarity_dist)
 
-
 # Recommend similar foods
-# Pick any food row index (e.g., 100)
-food_index <- 100
 
-# Find most similar items by sorting (excluding itself)
-similar_items <- order(similarity_matrix[food_index, ])[2:21]  # returns 20 most similar foods
+#Example 1 (Granola)
+# Step 1: Choose a food index (e.g., 100)
+food_index <- 1590
 
-# Use the same filtered df to match rows with nutrient_matrix
-df_clean <- df %>% drop_na(starts_with("clean_"))
+# Step 2: Get the original food’s health score
+original_score <- df_clean$health_score[food_index]
 
-# View recommended alternatives
-recommended <- df_clean[similar_items, c("name", "health_score", "cluster")]
-print(recommended)
+# Step 3: Find 20 most similar items (excluding itself)
+similar_items <- order(similarity_matrix[food_index, ])[2:100]
 
-# Find a food with high health_score
-healthy_df <- df %>%
-  drop_na(starts_with("clean_")) %>%
-  filter(health_score > 10)  # or choose a different threshold
+# Step 4: Filter df to match these items
+similar_df <- df_clean[similar_items, ]
 
-# Show top few healthy rows with row numbers
-healthy_preview <- healthy_df %>%
-  mutate(row_index = as.numeric(rownames(.))) %>%
-  select(row_index, name, health_score) %>%
+# Step 5: Keep only healthier options
+healthier_alternatives <- similar_df %>%
+  filter(health_score > original_score) %>%
   arrange(desc(health_score)) %>%
-  head(10)
+  select(name, health_score, cluster)
 
-print(healthy_preview)
+# Step 6: Show top 20 healthier alternatives
+head(healthier_alternatives, 20)
 
-# Pick any food row index (e.g., 100)
-food_index1 <- 517
+df_clean[food_index, c("name", "health_score")]
 
-# Find most similar items by sorting (excluding itself)
-similar_items1 <- order(similarity_matrix[food_index1, ])[2:21] # returns 20 most similar foods
+#Example 2(Frankfurter, meatless)
+# Step 1: Choose a food index (e.g., 100)
+food_index_1 <- 55
 
-# Use the same filtered df to match rows with nutrient_matrix
-df_clean1 <- df %>% drop_na(starts_with("clean_"))
+# Step 2: Get the original food’s health score
+original_score <- df_clean$health_score[food_index_1]
 
-# View recommended alternatives
-recommended1 <- df_clean1[similar_items, c("name", "health_score", "cluster")]
-print(recommended1)
+# Step 3: Find 20 most similar items (excluding itself)
+similar_items <- order(similarity_matrix[food_index_1, ])[2:100]
 
+# Step 4: Filter df to match these items
+similar_df <- df_clean[similar_items, ]
+
+# Step 5: Keep only healthier options
+healthier_alternatives <- similar_df %>%
+  filter(health_score > original_score) %>%
+  arrange(desc(health_score)) %>%
+  select(name, health_score, cluster)
+
+# Step 6: Show top 20 healthier alternatives
+head(healthier_alternatives, 20)
+
+df_clean[food_index_1, c("name", "health_score")]
+
+write.csv(cluster_data, "/Users/Mujeh/Downloads/nutrition_cleaned_data.csv", row.names = FALSE)
