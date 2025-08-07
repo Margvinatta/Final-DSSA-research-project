@@ -203,7 +203,7 @@ healthy_preview <- healthy_df %>%
 print(healthy_preview)
 
 # Pick any food row index (e.g., 100)
-#food_index1 <- 517
+food_index1 <- 517
 
 # Find most similar items by sorting (excluding itself)
 similar_items1 <- order(similarity_matrix[food_index1, ])[2:21] # returns 20 most similar foods
@@ -215,35 +215,7 @@ df_clean1 <- df %>% drop_na(starts_with("clean_"))
 recommended1 <- df_clean1[similar_items, c("name", "health_score", "cluster")]
 print(recommended1)
 
-# Make sure df_clean and nutrient_matrix are synced
-#df_clean <- df %>% drop_na(starts_with("clean_"))
 
-#nutrient_matrix <- df_clean %>%
- # select(starts_with("clean_")) %>%
- # scale() %>%
- # as.matrix()
-
-#  Recompute cosine similarity as a square matrix
-#similarity_matrix <- proxy::dist(nutrient_matrix, method = "cosine")
-#similarity_matrix <- as.matrix(similarity_matrix)
-
-# Set your target healthy food index
-#food_index <- 517
-
-# Double-check if index is valid after drop_na
-#if (food_index > nrow(df_clean)) {
- # stop("food_index is out of range for df_clean")
-#}
-
-# Get the top 20 most similar items (excluding itself)
-#similar_items <- order(similarity_matrix[food_index, ])[2:21]
-
-# View recommendations
-#recommended <- df_clean[similar_items, c("name", "health_score", "cluster")]
-#target_food <- df_clean[food_index, c("name", "health_score", "cluster")]
-
-#cat("📌 Target food:\n")
-#print(target_food)
 
 #cat("\n🍽️ Top 20 similar foods:\n"
 #print(recommended)
