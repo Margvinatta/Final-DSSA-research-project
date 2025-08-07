@@ -44,7 +44,6 @@ The dataset includes nutrient information per food item, with the following key 
 - `vitamin_c`: Vitamin C (mg)
 - `vitamin_a`: Vitamin A (IU or µg)
 
-> Additional columns may include product name, category, or serving information depending on the version of the dataset.
 
 ## Author
 **Margvinatta Senesie**  
