@@ -27,6 +27,8 @@ The dataset includes nutrient information per food item, with the following key 
 - `vitamin_c`: Vitamin C (mg)
 - `vitamin_a`: Vitamin A (IU or µg)
 
+The full dataset contains many more columns such as amino acids, sugars, and vitamins (e.g., vitamin D, B6, B12, etc.). These additional columns were not used in this project but are available for future work or more advanced modeling.
+
 ## Key Features
 - Nutrient cleaning and standardization
 - Health score formula for ranking
