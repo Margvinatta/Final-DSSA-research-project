@@ -215,7 +215,3 @@ df_clean1 <- df %>% drop_na(starts_with("clean_"))
 recommended1 <- df_clean1[similar_items, c("name", "health_score", "cluster")]
 print(recommended1)
 
-
-
-#cat("\n🍽️ Top 20 similar foods:\n"
-#print(recommended)
